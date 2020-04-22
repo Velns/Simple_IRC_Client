@@ -12,30 +12,42 @@ namespace IrcClient
 {
     class ircClient
     {
-        private string userName;
-        private string channel;
+        private static ircClient _client;
+
+        private string _server;
+        private string _userName;
+        private string _channel;
         private TcpClient tcpClient;
         private StreamReader inputStream;
         private StreamWriter outpurStream;
-        private string address = "";
-        private int port = 6667;
+        private int _port;
 
-        public ircClient(string ip, string userName)
+       
+
+        public static ircClient GetIrcClient(string server, int port, string userName, string channel)
         {
-            this.userName = userName;
-            tcpClient = new TcpClient(ip, port);
-            address = ((IPEndPoint)tcpClient.Client.LocalEndPoint).Address.ToString();
+            if (_client == null)
+                _client = new ircClient(server, port, userName, channel);
+            return _client;
+        }
+        public void ConnectToServer()
+        {
+            tcpClient = new TcpClient(_server, _port);
             inputStream = new StreamReader(tcpClient.GetStream());
             outpurStream = new StreamWriter(tcpClient.GetStream());
-            outpurStream.WriteLine("NICK " + userName);
-            outpurStream.WriteLine("USER " + userName + " 8 * " + userName);
+            outpurStream.WriteLine("NICK " + _userName);
+            outpurStream.WriteLine("USER " + _userName + " 8 * " + _userName);
             outpurStream.Flush();
-
+        }
+        public void joinRoom()
+        {
+            outpurStream.WriteLine("JOIN #" + _channel);
+            outpurStream.Flush();
         }
         public void joinRoom(string channel)
         {
-            this.channel = channel;
-            outpurStream.WriteLine("JOIN #" + channel);
+            _channel = channel;
+            outpurStream.WriteLine("JOIN #" + _channel);
             outpurStream.Flush();
 
         }
@@ -47,14 +59,21 @@ namespace IrcClient
         }
         public void sendChatMessage(string message)
         {
-            sendIrcMessage(":" + userName + " PRIVMSG #" + channel + " :" + message);
-                    }
-        
+            sendIrcMessage(":" + _userName + " PRIVMSG #" + _channel + " :" + message);
+                    }        
         public string readMessage()
         {
             string message = inputStream.ReadLine();
             return message;
         }
-        
+
+        private ircClient(string server, int port, string userName, string channel)
+        {
+            _server = server;
+            _port = port;
+            _userName = userName;
+            _channel = channel;
+        }
+
     }
 }
