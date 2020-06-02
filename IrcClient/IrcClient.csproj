@@ -43,7 +43,20 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Client.cs" />
+    <Compile Include="AbstractFactory\IShower.cs" />
+    <Compile Include="AbstractFactory\IConverter.cs" />
+    <Compile Include="AbstractFactory\IFactory.cs" />
+    <Compile Include="AbstractFactory\IMessage.cs" />
+    <Compile Include="AbstractFactory\Message.cs" />
+    <Compile Include="AbstractFactory\ReceivedMessage.cs" />
+    <Compile Include="AbstractFactory\ReceivedMessageFactory.cs" />
+    <Compile Include="AbstractFactory\SentMessage.cs" />
+    <Compile Include="AbstractFactory\SentMessageFactory.cs" />
+    <Compile Include="Builder.cs" />
+    <Compile Include="BuilderTester.cs" />
+    <Compile Include="builderReader.cs" />
+    <Compile Include="Director.cs" />
+    <Compile Include="BuilderClient.cs" />
     <Compile Include="IrcClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

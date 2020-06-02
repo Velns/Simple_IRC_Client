@@ -11,9 +11,35 @@ namespace IrcClient
     {
         static void Main(string[] args)
         {
-            Client c = new Client();
-            c.Start();
-
+            Director d = new Director();
+            Builder b;
+           
+            Console.WriteLine("To load bor-reader press [r], to load client press [c]..");
+            switch (Console.ReadKey().Key)
+            {
+                case ConsoleKey.R:
+                    {
+                        b = new builderReader();
+                        d.Build(b);
+                        break;
+                    }
+                case ConsoleKey.C:
+                    {
+                        b = new BuilderClient();
+                        d.Build(b);
+                        break;
+                    }
+                case ConsoleKey.T:
+                    {
+                        b = new BuilderTester();
+                        d.Build(b);
+                        break;
+                    }
+                default:
+                    Console.WriteLine("Program closing..");
+                    break;
+            }
+            
             
 
         }

@@ -7,62 +7,25 @@ using System.Threading.Tasks;
 
 namespace IrcClient
 {
-    class Client
+    class BuilderClient : Builder
     {
-        private static ircClient _irc;
-
-        private static string _server;
-        private static string _userName;
-        private static string _channel;
-        private static int _port;
-
         private static int pongs = 0;
         private static int count = 0;
 
-        static void ChangeParametersServer()
-        {
-            Console.WriteLine("Enter IRC server address:");
-            _server =    "irc.freenode.net";        
-                        // Console.ReadLine();
-
-            Console.WriteLine("Enter IRC server port:");
-            _port = 6667;                        
-                   // Convert.ToInt32(Console.ReadLine());
-
-            Console.WriteLine("Enter username:");
-            _userName =  "tester_bot_1";         
-                        // Console.ReadLine();
-
-            Console.WriteLine("Enter channel:");
-            _channel =   "testing_bot";            
-                        // Console.ReadLine();
-
-            _irc = ircClient.GetIrcClient(_server, _port, _userName, _channel);
-        }
-
-        public void Start()
-        {
-            ChangeParametersServer();
-            _irc.ConnectToServer();
-            _irc.joinRoom();
-            InitializeReaderAndWriter();
-        }
-        private void InitializeReaderAndWriter()
+        public override void InitializeReaderAndWriter()
         {
             try
             {
                 Console.WriteLine("Connecting..");
-
                 while (true)
                 {
                     string message = _irc.readMessage();
                     if (message.Contains("/NAMES list") && message != null)
                     {
-                        Console.Title = "Connected to: " + _channel + ". Messages: " + count + ". Pongs: " + pongs;
+                        Console.Title = "Connected to: " + _irc.server + " #" + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
                         break;
                     }
                 }
-
                 Console.WriteLine("Conected");
 
                 Thread readeThread = new Thread(() => ReadingChat(_irc));
@@ -81,7 +44,7 @@ namespace IrcClient
                 Thread.Sleep(1000);
             }
         }
-        static void ReadingChat(ircClient irc)
+        public override void ReadingChat(ircClient irc)
         {
 
             while (true)
@@ -94,7 +57,7 @@ namespace IrcClient
                         irc.sendIrcMessage(message.Replace("PING", "PONG"));
                         Console.WriteLine("PONG message sent");
                         pongs++;
-                        Console.Title = "Connected to: " + _channel + ". Messages: " + count + ". Pongs: " + pongs;
+                        Console.Title = "Connected to: " + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
                     }
                     else if (message != null)
                     {
@@ -110,7 +73,7 @@ namespace IrcClient
                         Console.ResetColor();
                         Console.WriteLine(") " + message);
                         count++;
-                        Console.Title = "Connected to: " + _channel + ". Messages: " + count + ". Pongs: " + pongs;
+                        Console.Title = "Connected to: " + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
                     }
                 }
                 catch
@@ -119,7 +82,7 @@ namespace IrcClient
                 }
             }
         }
-        static void SendingMessage(ircClient irc)
+        public override void SendingMessage(ircClient irc)
         {
             while (true)
             {
