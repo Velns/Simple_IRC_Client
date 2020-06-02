@@ -10,7 +10,7 @@ using System.Net;
 
 namespace IrcClient
 {
-    class ircClient
+    public class ircClient
     {
         private static ircClient _client;
 

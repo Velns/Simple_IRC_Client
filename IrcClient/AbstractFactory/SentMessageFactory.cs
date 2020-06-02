@@ -6,9 +6,9 @@ namespace IrcClient
 {
     public class SentMessageFactory:IFactory
     {
-        public IMessage CreateEntity(ircClient client, string mes)
+        public IMessage CreateEntity(ircClient client, string message)
         {
-            return new SentMessage(client, mes);
+            return new SentMessage(client, message);
         }
     }
 }

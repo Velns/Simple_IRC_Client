@@ -6,9 +6,9 @@ namespace IrcClient
 {
     public class ReceivedMessageFactory : IFactory
     {
-        public IMessage CreateEntity(ircClient client, string mes)
+        public IMessage CreateEntity(ircClient client, string message)
         {
-            return new ReceivedMessage(client, mes);
+            return new ReceivedMessage(client, message);
         }
     }
 }

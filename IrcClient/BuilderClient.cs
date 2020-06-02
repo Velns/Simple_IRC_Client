@@ -11,6 +11,7 @@ namespace IrcClient
     {
         private static int pongs = 0;
         private static int count = 0;
+        private IFactory factory = new ReceivedMessageFactory();
 
         public override void InitializeReaderAndWriter()
         {
@@ -46,32 +47,32 @@ namespace IrcClient
         }
         public override void ReadingChat(ircClient irc)
         {
-
+            IMessage message;
             while (true)
             {
                 try
                 {
-                    string message = irc.readMessage();
-                    if (message.Contains("PING"))
+                    string inputStr = irc.readMessage();
+                    if (inputStr.Contains("PING"))
                     {
-                        irc.sendIrcMessage(message.Replace("PING", "PONG"));
+                        irc.sendIrcMessage(inputStr.Replace("PING", "PONG"));
                         Console.WriteLine("PONG message sent");
                         pongs++;
                         Console.Title = "Connected to: " + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
                     }
-                    else if (message != null)
+                    else if (inputStr != null)
                     {
-                        var offset = message.IndexOf(':');
-                        var result = message.IndexOf(':', offset + 1);
-                        string userName = message.Substring(1, message.IndexOf("!") - 1);
-                        message = message.Substring(result + 1);
+                        byte[] data = Encoding.Unicode.GetBytes(inputStr);
+                        var messageFactory = new Message(factory, irc, inputStr);
+                        message = messageFactory.message;
 
-                        Console.Write(DateTime.Now.ToString("HH:mm tt("));
+                       
+                        Console.Write(message.Time.ToString("HH:mm tt("));
                         Console.BackgroundColor = ConsoleColor.DarkRed;
                         Console.ForegroundColor = ConsoleColor.Black;
-                        Console.Write(userName);
+                        Console.Write(message.UserName);
                         Console.ResetColor();
-                        Console.WriteLine(") " + message);
+                        Console.WriteLine(") " + message.Text);
                         count++;
                         Console.Title = "Connected to: " + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
                     }

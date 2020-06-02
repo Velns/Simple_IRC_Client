@@ -1,5 +1,4 @@
-﻿using IrcClient;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Text;
 
@@ -12,6 +11,5 @@ namespace IrcClient
         {
             message = factory.CreateEntity(client, mes);
         }
-
     }
 }

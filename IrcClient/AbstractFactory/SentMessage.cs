@@ -6,34 +6,17 @@ namespace IrcClient
 {
     public class SentMessage : IMessage
     {
-        public Int32 Id { set; get; }
-        public string Server { set; get; }
-        public string Chanel { set; get; }
-        public string SenderNickname { set; get; }
-        public string ReceiverNickname { set; get; }
-        public string Text { set; get; }
-        public SentMessage(ircClient client, string message)
+        public string UserName { get; }
+        public string Server { get; }
+        public string Chanel { get; }
+        public string Text { get; }
+        public DateTime Time => DateTime.Now;
+        public SentMessage(ircClient client, string mes)
         {
-            ConvertToMassage(client, message);
-        }
-
-        public void ConvertToMassage(ircClient client, string mes)
-        {
+            UserName = client.userName;
             Server = client.server;
             Chanel = client.channel;
-            SenderNickname = client.userName;
             Text = string.Copy(mes);
-
-        }
-
-        public void ShowMassage()
-        {
-           // Console.Write(">>>");
-           // Console.BackgroundColor = ConsoleColor.DarkRed;
-           // Console.ForegroundColor = ConsoleColor.Black;
-           // Console.Write(SenderNickname);
-           // Console.ResetColor();
-           // Console.WriteLine(": " + Text);
         }
     }
 }

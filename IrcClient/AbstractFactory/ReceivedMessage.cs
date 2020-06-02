@@ -6,28 +6,20 @@ namespace IrcClient
 {
     public class ReceivedMessage : IMessage
     {
-        public Int32 Id {  set; get; }
-        public string Server {  set; get; }
-        public string Chanel {  set; get; }
-        public string SenderNickname {  set; get; }
-        public string ReceiverNickname {  set; get; }
-        public string Text {  set; get; }
+        public string UserName { get; }
+        public string Server { get; }
+        public string Chanel { get; }
+        public string Text { get; }
+        public DateTime Time => DateTime.Now;
         public ReceivedMessage(ircClient client, string message)
         {
-            ConvertToMassage(client, message);
-        }
-
-        public void ConvertToMassage(ircClient client, string mes)
-        {
+            var offset = message.IndexOf(':');
+            var result = message.IndexOf(':', offset + 1);
+            UserName = message.Substring(1, message.IndexOf("!") - 1);
+            Text = message.Substring(result + 1);           
             Server = client.server;
             Chanel = client.channel;
-            var offset = mes.IndexOf(':');
-            var result = mes.IndexOf(':', offset + 1);
-            SenderNickname = mes.Substring(1, mes.IndexOf("!") - 1);
-            Text = mes.Substring(result + 1);
-
+            
         }
-
-        
     }
 }

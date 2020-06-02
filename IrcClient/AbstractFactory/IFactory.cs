@@ -6,6 +6,6 @@ namespace IrcClient
 {
     public interface IFactory
     {
-        IMessage CreateEntity(ircClient client, string mes);
+        IMessage CreateEntity(ircClient client, string message);
     }
 }
