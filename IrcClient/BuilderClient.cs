@@ -12,6 +12,7 @@ namespace IrcClient
         private static int pongs = 0;
         private static int count = 0;
         private IFactory factory = new ReceivedMessageFactory();
+        
 
         public override void InitializeReaderAndWriter()
         {
@@ -20,10 +21,10 @@ namespace IrcClient
                 Console.WriteLine("Connecting..");
                 while (true)
                 {
-                    string message = _irc.readMessage();
-                    if (message.Contains("/NAMES list") && message != null)
+                    string inputStr = _irc.readMessage();
+                    if (inputStr.Contains("/NAMES list") && inputStr != null)
                     {
-                        Console.Title = "Connected to: " + _irc.server + " #" + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
+                        Console.Title = "Connected to: " + _irc.server + " #" + _irc.channel;
                         break;
                     }
                 }
@@ -48,6 +49,7 @@ namespace IrcClient
         public override void ReadingChat(ircClient irc)
         {
             IMessage message;
+
             while (true)
             {
                 try
@@ -65,16 +67,10 @@ namespace IrcClient
                         byte[] data = Encoding.Unicode.GetBytes(inputStr);
                         var messageFactory = new Message(factory, irc, inputStr);
                         message = messageFactory.message;
-
-                       
-                        Console.Write(message.Time.ToString("HH:mm tt("));
-                        Console.BackgroundColor = ConsoleColor.DarkRed;
-                        Console.ForegroundColor = ConsoleColor.Black;
-                        Console.Write(message.UserName);
-                        Console.ResetColor();
-                        Console.WriteLine(") " + message.Text);
+                                               
                         count++;
-                        Console.Title = "Connected to: " + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
+
+                        ShowMessage(message);
                     }
                 }
                 catch
@@ -90,6 +86,17 @@ namespace IrcClient
                 string sendingMessage = Console.ReadLine();
                 irc.sendChatMessage(sendingMessage);
             }
+        }
+        public void ShowMessage(IMessage message)
+        {
+            Console.Write(message.Time.ToString("HH:mm tt("));
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write(message.UserName);
+            Console.ResetColor();
+            Console.WriteLine(") " + message.Text);
+
+            Console.Title = "Connected to: " + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
         }
 
     }
