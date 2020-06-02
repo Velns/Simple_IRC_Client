@@ -50,11 +50,11 @@
     <Compile Include="AbstractFactory\ReceivedMessageFactory.cs" />
     <Compile Include="AbstractFactory\SentMessage.cs" />
     <Compile Include="AbstractFactory\SentMessageFactory.cs" />
-    <Compile Include="Builder.cs" />
-    <Compile Include="BuilderTester.cs" />
-    <Compile Include="builderReader.cs" />
+    <Compile Include="User.cs" />
+    <Compile Include="UserTester.cs" />
+    <Compile Include="UserReadder.cs" />
     <Compile Include="Director.cs" />
-    <Compile Include="BuilderClient.cs" />
+    <Compile Include="UserStandert.cs" />
     <Compile Include="IrcClient.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

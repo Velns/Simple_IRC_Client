@@ -7,12 +7,9 @@ using System.Threading.Tasks;
 
 namespace IrcClient
 {
-    class BuilderClient : Builder
+    class UserTester : User
     {
-        private static int pongs = 0;
-        private static int count = 0;
-        private IFactory factory = new ReceivedMessageFactory();
-        
+        private string inputStr;
 
         public override void InitializeReaderAndWriter()
         {
@@ -21,16 +18,18 @@ namespace IrcClient
                 Console.WriteLine("Connecting..");
                 while (true)
                 {
-                    string inputStr = _irc.readMessage();
+                    inputStr = _irc.readMessage();
                     if (inputStr.Contains("/NAMES list") && inputStr != null)
                     {
                         Console.Title = "Connected to: " + _irc.server + " #" + _irc.channel;
                         break;
                     }
+
+                    Console.WriteLine(inputStr);
                 }
                 Console.WriteLine("Conected");
 
-                Thread readeThread = new Thread(() => ReadingChat(_irc));
+                Thread readeThread = new Thread(() => ReadingStreams(_irc));
                 readeThread.Start();
 
                 Thread writeThread = new Thread(() => SendingMessage(_irc));
@@ -46,15 +45,16 @@ namespace IrcClient
                 Thread.Sleep(1000);
             }
         }
-        public override void ReadingChat(ircClient irc)
+        public override void ReadingStreams(ircClient irc)
         {
-            IMessage message;
 
             while (true)
             {
                 try
                 {
                     string inputStr = irc.readMessage();
+                    Console.WriteLine(inputStr);
+
                     if (inputStr.Contains("PING"))
                     {
                         irc.sendIrcMessage(inputStr.Replace("PING", "PONG"));
@@ -67,10 +67,9 @@ namespace IrcClient
                         byte[] data = Encoding.Unicode.GetBytes(inputStr);
                         var messageFactory = new Message(factory, irc, inputStr);
                         message = messageFactory.message;
-                                               
-                        count++;
 
-                        ShowMessage(message);
+                        count++;
+                        
                     }
                 }
                 catch
@@ -84,20 +83,12 @@ namespace IrcClient
             while (true)
             {
                 string sendingMessage = Console.ReadLine();
-                irc.sendChatMessage(sendingMessage);
+                irc.sendIrcMessage(sendingMessage);
             }
         }
-        public void ShowMessage(IMessage message)
+        public override void ShowMessage()
         {
-            Console.Write(message.Time.ToString("HH:mm tt("));
-            Console.BackgroundColor = ConsoleColor.DarkRed;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write(message.UserName);
-            Console.ResetColor();
-            Console.WriteLine(") " + message.Text);
-
-            Console.Title = "Connected to: " + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
+            //I'm robot & I`m not need it -_-
         }
-
     }
 }

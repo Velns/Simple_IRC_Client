@@ -64,7 +64,6 @@ namespace IrcClient
         public string readMessage()
         {
             string message = inputStream.ReadLine();
-            Console.WriteLine(message);
             return message;
         }
 

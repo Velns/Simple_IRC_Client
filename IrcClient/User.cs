@@ -6,10 +6,20 @@ using System.Threading.Tasks;
 
 namespace IrcClient
 {
-    abstract class Builder
+    abstract class User
     {
-       
+        public static int pongs { get; set; } = 0;
+        public static int count { get; set; } = 0;
+        public IFactory factory { get; } = new ReceivedMessageFactory();
+        public IMessage message { get; set; }
         public ircClient _irc { get; private set; }
+        public void StartClient()
+        {
+            ChangeParametersServer();
+            ConnectToServer();
+            JoinRoom();
+            InitializeReaderAndWriter();
+        }
         public void ChangeParametersServer()
         {
             Console.WriteLine("Enter IRC server address:");
@@ -39,8 +49,20 @@ namespace IrcClient
             _irc.joinRoom();
         }
         public abstract void InitializeReaderAndWriter();
-        public abstract void ReadingChat(ircClient irc);
+        public abstract void ReadingStreams(ircClient irc);
         public abstract void SendingMessage(ircClient irc);
+        public virtual void ShowMessage()
+        {
+            Console.Write(message.Time.ToString("HH:mm tt("));
+            Console.BackgroundColor = ConsoleColor.DarkRed;
+            Console.ForegroundColor = ConsoleColor.Black;
+            Console.Write(message.UserName);
+            Console.ResetColor();
+            Console.WriteLine(") " + message.Text);
+
+            Console.Title = "Connected to: " + _irc.channel + ". Messages: " + count + ". Pongs: " + pongs;
+        }
+
 
     }
 }

@@ -8,7 +8,7 @@ namespace IrcClient
 {
     class Director
     {
-        public Builder Build (Builder builder)
+        public User Build (User builder)
         {
             builder.ChangeParametersServer();
             builder.ConnectToServer();
