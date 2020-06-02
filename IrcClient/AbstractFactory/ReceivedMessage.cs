@@ -4,7 +4,7 @@ using System.Text;
 
 namespace IrcClient
 {
-    public class ReceivedMessage : IMessage, IShower
+    public class ReceivedMessage : IMessage
     {
         public Int32 Id {  set; get; }
         public string Server {  set; get; }
@@ -28,14 +28,6 @@ namespace IrcClient
 
         }
 
-        public void ShowMessage()
-        {
-            Console.Write(">>>");
-            Console.BackgroundColor = ConsoleColor.DarkRed;
-            Console.ForegroundColor = ConsoleColor.Black;
-            Console.Write(SenderNickname);
-            Console.ResetColor();
-            Console.WriteLine(": " + Text);
-        }
+        
     }
 }

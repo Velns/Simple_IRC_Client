@@ -21,10 +21,8 @@ namespace IrcClient
         {
             Server = client.server;
             Chanel = client.channel;
-            var offset = mes.IndexOf(':');
-            var result = mes.IndexOf(':', offset + 1);
-            SenderNickname = mes.Substring(1, mes.IndexOf("!") - 1);
-            Text = mes.Substring(result + 1);
+            SenderNickname = client.userName;
+            Text = string.Copy(mes);
 
         }
 

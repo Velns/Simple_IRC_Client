@@ -50,6 +50,7 @@
     <Compile Include="AbstractFactory\Message.cs" />
     <Compile Include="AbstractFactory\ReceivedMessage.cs" />
     <Compile Include="AbstractFactory\ReceivedMessageFactory.cs" />
+    <Compile Include="AbstractFactory\RecMesShower.cs" />
     <Compile Include="AbstractFactory\SentMessage.cs" />
     <Compile Include="AbstractFactory\SentMessageFactory.cs" />
     <Compile Include="Builder.cs" />

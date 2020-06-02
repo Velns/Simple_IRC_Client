@@ -4,8 +4,8 @@ using System.Text;
 
 namespace IrcClient
 {
-    public interface IShower
+    public  interface IShower
     {
-        void ShowMessage();
+        void  ShowMessage();
     }
 }
