@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IrcClient.Composite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace IrcClient
 {
-    class UserStandert : User
+    class UserStandart : User
     {
         public override void InitializeReaderAndWriter()
         {
@@ -80,7 +81,38 @@ namespace IrcClient
             while (true)
             {
                 string sendingMessage = Console.ReadLine();
-                irc.sendChatMessage(sendingMessage);
+
+                if (sendingMessage[0] == '~')
+                {
+                    Console.WriteLine(sendingMessage);                                          //1
+                    switch (sendingMessage.Substring(1, sendingMessage.IndexOf(' ') - 1).ToLower())       // перевірка чи перший символ є службовим
+                    {
+                        case "addc":
+                            {
+                                string str = sendingMessage.Substring(sendingMessage.IndexOf(' ') + 1);
+
+                                string folderName = str.Substring(0, str.IndexOf(' '));
+
+                                string contName = str.Remove(0, str.IndexOf(' ') + 1);
+
+                                ContactFolder.Add(new Person(contName), folderName);
+                                break;
+                            }
+                        case "showc":
+                            {
+                                contacts.Show();
+                                break;
+                            }
+                        default:
+                            {
+                                Console.WriteLine("Поки нема такої команди");
+                                break;
+                            }
+                    }
+                }          
+                    
+                else
+                    irc.sendChatMessage(sendingMessage);
             }
         }
 

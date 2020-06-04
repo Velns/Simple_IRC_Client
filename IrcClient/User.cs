@@ -1,4 +1,5 @@
-﻿using System;
+﻿using IrcClient.Composite;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -8,6 +9,7 @@ namespace IrcClient
 {
     abstract class User
     {
+        public ContactFolder contacts = Serializer.LoadContacts();
         public static int pongs { get; set; } = 0;
         public static int count { get; set; } = 0;
         public IFactory factory { get; } = new ReceivedMessageFactory();
