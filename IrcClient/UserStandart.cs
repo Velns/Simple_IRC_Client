@@ -84,8 +84,7 @@ namespace IrcClient
 
                 if (sendingMessage[0] == '~')
                 {
-                    Console.WriteLine(sendingMessage);                                          //1
-                    switch (sendingMessage.Substring(1, sendingMessage.IndexOf(' ') - 1).ToLower())       // перевірка чи перший символ є службовим
+                    switch (sendingMessage.Substring(1, sendingMessage.IndexOf(' ') - 1).ToLower())         // перевірка чи перший символ є службовим
                     {
                         case "addc":
                             {
